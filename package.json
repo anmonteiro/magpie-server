@@ -1,0 +1,12 @@
+{
+  "name": "mna",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  	"start": "node main",
+    "test": "mocha --ui bdd test"
+  },
+  "author": "anm",
+  "license": "ISC"
+}
