@@ -1,14 +1,16 @@
 var chai = require('chai'),
   should = chai.should(),
   expect = chai.expect,
-  nock = require('nock');
+  nock = require('nock'),
+  cheerio = require('cheerio');
 
 var hn = require('../HNScraper');
 
 describe('HNScraper parse article element function', function() {
   var el,
     invalidEl,
-    obj;
+    obj,
+    $;
   beforeEach(function() {
     el = '<td class="title"><a href="http://www.buildyourownlisp.com/">' +
       'Learn C and build your own programming language</a>' +
@@ -18,6 +20,7 @@ describe('HNScraper parse article element function', function() {
       url: 'http://www.buildyourownlisp.com/',
       src: ' (buildyourownlisp.com) ',
     };
+    $ = cheerio.load(el);
   });
 
   afterEach(function() {
@@ -27,7 +30,7 @@ describe('HNScraper parse article element function', function() {
   });
 
   it('should parse one DOM element with the article link into an object', function() {
-    hn.parseArticleElement(el, function(err, art) {
+    hn.parseArticleElement($(el), function(err, art) {
     	expect(err).to.be.null;
     	expect(err).not.to.be.undefined;
     	art.should.be.ok;
@@ -38,7 +41,7 @@ describe('HNScraper parse article element function', function() {
   });
 
   it('should return an error when an empty DOM element is passed to the function', function() {
-    hn.parseArticleElement('', function(err, art) {
+    hn.parseArticleElement($(''), function(err, art) {
       expect(err).not.to.be.null;
       expect(err).not.to.be.undefined;
       expect(art).not.to.be.ok;
@@ -50,7 +53,7 @@ describe('HNScraper parse article element function', function() {
       'Learn C and build your own programming language</a>' +
       '<span class="comhead"> (buildyourownlisp.com) </span></div>';
 
-      hn.parseArticleElement(invalidEl, function(err, art) {
+      hn.parseArticleElement($(invalidEl), function(err, art) {
         expect(err).not.to.be.null;
         expect(err).not.to.be.undefined;
         expect(art).not.to.be.ok;
@@ -60,8 +63,8 @@ describe('HNScraper parse article element function', function() {
 
 describe('HNScraper.scrape', function() {
   var api;
-  beforeEach(function() {
-    
+  beforeEach(function () {
+    api = null;
   });
 
   afterEach(function() {
@@ -91,4 +94,34 @@ describe('HNScraper.scrape', function() {
     });
   });
 
+});
+
+describe('HNScraper.getItems', function() {
+  var api;
+
+  afterEach(function() {
+    nock.cleanAll();
+  });
+
+  it('should return a list of 30 items when hn.html is the response', function(done) {
+    api = nock('http://10.21.4.37:8080')
+      .get('http://news.ycombinator.com/news')
+      .replyWithFile(200, __dirname + '/hn.html');
+
+    hn.getItems(function(err, items){
+      expect(err).to.be.null;
+      expect(items).not.to.be.undefined;
+      expect(items).to.have.length(30);
+
+      for (var i = 0; i < 30; i++) {
+        (function(idx){
+          expect(items[idx]).to.have.keys(['src', 'title', 'url']);
+          console.log(items[idx]);
+        })(i);
+      }
+
+      done();
+    });
+
+  });
 });

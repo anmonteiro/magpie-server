@@ -4,12 +4,12 @@ var cheerio = require('cheerio'),
 var HNScraper = function() {
 }
 
-HNScraper.prototype.parseArticleElement = function(el, callback){
+HNScraper.prototype.parseArticleElement = function($el, callback){
   var err = null;
-  var $ = cheerio.load(el);
+  //var $ = cheerio.load(el);
   var result = null;
-  var $a = $('td.title > a');
-  var $span = $('td.title > span');
+  var $a = $el.find('td.title > a');
+  var $span = $el.find('td.title > span');
 
   if($a.length && $span.length) {
     result = {
@@ -40,5 +40,25 @@ HNScraper.prototype.scrape = function(callback) {
   });
 }
 
+HNScraper.prototype.getItems = function(callback) {
+  var result = [],
+    that = this;
+
+  this.scrape(function(err, body) {
+    var $ = cheerio.load(body);
+
+    $('td:not([align]).title').each(function (index, element) {
+      that.parseArticleElement($(element), function (err, res) {
+        if(!err) {
+          result.push(res);
+        }
+      })
+    });
+    
+    callback(null, result);
+  });
+}
+
 //'td:not([align]).title'
 module.exports = new HNScraper();
+
