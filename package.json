@@ -3,6 +3,15 @@
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
+  "devDependencies": {
+    "chai": "1.9.x",
+    "nock": "0.27.x"
+  },
+  "dependencies": {
+    "express": "3.x",
+    "cheerio": "0.14.x",
+    "request": "2.34.x"
+  },
   "scripts": {
   	"start": "node main",
     "test": "mocha --ui bdd test"

@@ -2,6 +2,7 @@ var cheerio = require('cheerio'),
   request = require('request');
 
 var HNScraper = function() {
+  if (!this instanceof HNScraper) return new HNScraper();
 }
 
 HNScraper.prototype.parseArticleElement = function($el, callback){
@@ -54,7 +55,7 @@ HNScraper.prototype.getItems = function(callback) {
         }
       })
     });
-    
+
     callback(null, result);
   });
 }

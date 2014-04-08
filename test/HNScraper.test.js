@@ -116,7 +116,6 @@ describe('HNScraper.getItems', function() {
       for (var i = 0; i < 30; i++) {
         (function(idx){
           expect(items[idx]).to.have.keys(['src', 'title', 'url']);
-          console.log(items[idx]);
         })(i);
       }
 
