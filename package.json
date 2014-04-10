@@ -5,7 +5,8 @@
   "main": "index.js",
   "devDependencies": {
     "chai": "1.9.x",
-    "nock": "0.27.x"
+    "nock": "0.27.x",
+    "supertest": "0.10.x"
   },
   "dependencies": {
     "express": "3.x",

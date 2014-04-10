@@ -7,7 +7,6 @@ var HNScraper = function() {
 
 HNScraper.prototype.parseArticleElement = function($el, callback){
   var err = null;
-  //var $ = cheerio.load(el);
   var result = null;
   var $a = $el.find('td.title > a');
   var $span = $el.find('td.title > span');
@@ -29,7 +28,7 @@ HNScraper.prototype.parseArticleElement = function($el, callback){
 HNScraper.prototype.scrape = function(callback) {
   request({
     uri : 'http://news.ycombinator.com/news',
-    proxy : 'http://extsafira06:extsafira06@10.21.4.37:8080',
+    //proxy : 'http://extsafira06:extsafira06@10.21.4.37:8080',
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       callback(error, body);
@@ -50,7 +49,9 @@ HNScraper.prototype.getItems = function(callback) {
 
     $('td:not([align]).title').each(function (index, element) {
       that.parseArticleElement($(element), function (err, res) {
-        if(!err) {
+        if(err) {
+          console.log(err);
+        } else {
           result.push(res);
         }
       })

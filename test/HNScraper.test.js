@@ -67,13 +67,10 @@ describe('HNScraper.scrape', function() {
     api = null;
   });
 
-  afterEach(function() {
-    nock.cleanAll();
-  });
 
   it('should get content when passed the correct url', function(done) {
-    api = nock('http://10.21.4.37:8080')
-      .get('http://news.ycombinator.com/news')
+    api = nock('http://news.ycombinator.com')
+      .get('/news')
       .reply(200, 'hi');
     hn.scrape(function(err, content) {
       expect(err).to.be.null;
@@ -83,8 +80,8 @@ describe('HNScraper.scrape', function() {
   });
 
   it('should return an error when the server replies 404', function(done) {
-    api = nock('http://10.21.4.37:8080')
-      .get('http://news.ycombinator.com/news')
+    api = nock('http://news.ycombinator.com')
+      .get('/news')
       .reply(404);
 
     hn.scrape(function(err, content) {
@@ -94,25 +91,25 @@ describe('HNScraper.scrape', function() {
     });
   });
 
+  afterEach(function() {
+    nock.cleanAll();
+  });
 });
 
 describe('HNScraper.getItems', function() {
   var api;
 
-  afterEach(function() {
-    nock.cleanAll();
-  });
 
   it('should return a list of 30 items when hn.html is the response', function(done) {
-    api = nock('http://10.21.4.37:8080')
-      .get('http://news.ycombinator.com/news')
+    api = nock('http://news.ycombinator.com')
+      .get('/news')
       .replyWithFile(200, __dirname + '/hn.html');
 
     hn.getItems(function(err, items){
       expect(err).to.be.null;
       expect(items).not.to.be.undefined;
+      //console.log(JSON.stringify(items, null, 4));
       expect(items).to.have.length(30);
-
       for (var i = 0; i < 30; i++) {
         (function(idx){
           expect(items[idx]).to.have.keys(['src', 'title', 'url']);
@@ -122,5 +119,9 @@ describe('HNScraper.getItems', function() {
       done();
     });
 
+  });
+
+  afterEach(function() {
+    nock.cleanAll();
   });
 });
