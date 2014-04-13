@@ -1,8 +1,8 @@
 var express = require('express');
+var routes = require('./routes');
 var app = express();
 
-//app.get
-
+routes(app);
 
 
 var server = app.listen(3000, function() {

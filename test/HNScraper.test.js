@@ -4,7 +4,7 @@ var chai = require('chai'),
   nock = require('nock'),
   cheerio = require('cheerio');
 
-var hn = require('../HNScraper');
+var hn = require('../lib/HNScraper');
 
 describe('HNScraper parse article element function', function() {
   var el,
