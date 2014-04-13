@@ -42,7 +42,7 @@ describe('GET /random_url_42', function () {
       .get('/news')
       .replyWithFile(200, __dirname + '/hn.html');
   
-  	request(app)
+    request(app)
       .get('/random_url_42')
       .expect(404);
   });

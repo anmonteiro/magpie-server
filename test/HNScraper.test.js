@@ -105,7 +105,7 @@ describe('HNScraper.getItems', function() {
       .get('/news')
       .replyWithFile(200, __dirname + '/hn.html');
 
-    hn.getItems(function(err, items){
+    hn.getItems(function(err, items) {
       expect(err).to.be.null;
       expect(items).not.to.be.undefined;
       //console.log(JSON.stringify(items, null, 4));
