@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anmonteiro/mna.git"
+  },
   "devDependencies": {
     "chai": "1.9.x",
     "nock": "0.27.x",
