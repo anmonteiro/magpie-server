@@ -1,0 +1,9 @@
+{
+  "url" : "http://news.ycombinator.com/news",
+  "news_selector" : "td:not([align]).title",
+  "article_selector" : {
+    "" : "a", //probably passar isto a array e assumir o que é o quê
+    "" : "span",
+    "" : "a[href]"
+  },
+}

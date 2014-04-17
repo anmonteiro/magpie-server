@@ -67,6 +67,9 @@ describe('HNScraper.scrape', function() {
     api = null;
   });
 
+  afterEach(function() {
+    nock.cleanAll();
+  });
 
   it('should get content when passed the correct url', function(done) {
     api = nock('http://news.ycombinator.com')
@@ -91,19 +94,19 @@ describe('HNScraper.scrape', function() {
     });
   });
 
-  afterEach(function() {
-    nock.cleanAll();
-  });
 });
 
 describe('HNScraper.getItems', function() {
   var api;
 
+  afterEach(function() {
+    nock.cleanAll();
+  });
 
   it('should return a list of 30 items when hn.html is the response', function(done) {
     api = nock('http://news.ycombinator.com')
       .get('/news')
-      .replyWithFile(200, __dirname + '/hn.html');
+      .replyWithFile(200, __dirname + '/files/hn.html');
 
     hn.getItems(function(err, items) {
       expect(err).to.be.null;
@@ -121,7 +124,4 @@ describe('HNScraper.getItems', function() {
 
   });
 
-  afterEach(function() {
-    nock.cleanAll();
-  });
 });

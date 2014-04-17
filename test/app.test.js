@@ -13,10 +13,13 @@ var api;
 
 describe('GET /', function () {
   
+  afterEach(function() {
+    nock.cleanAll();
+  });
   it('should get the items object', function () {
   	api = nock('http://news.ycombinator.com')
       .get('/news')
-      .replyWithFile(200, __dirname + '/hn.html');
+      .replyWithFile(200, __dirname + '/files/hn.html');
 
     request(app)
       .get('/')
@@ -30,25 +33,24 @@ describe('GET /', function () {
       });
   });
 
-  afterEach(function() {
-    nock.cleanAll();
-  });
 
 });
 
 describe('GET /random_url_42', function () {
+
+  afterEach(function() {
+    nock.cleanAll();
+  });
+  
   it('should return an error because we have no routes defined to that url', function () {
   	api = nock('http://news.ycombinator.com')
       .get('/news')
-      .replyWithFile(200, __dirname + '/hn.html');
+      .replyWithFile(200, __dirname + '/files/hn.html');
   
     request(app)
       .get('/random_url_42')
       .expect(404);
   });
 
-  afterEach(function() {
-    nock.cleanAll();
-  });
 
 });
