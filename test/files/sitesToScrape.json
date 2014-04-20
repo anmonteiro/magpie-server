@@ -1,9 +1,41 @@
 {
-  "url" : "http://news.ycombinator.com/news",
-  "news_selector" : "td:not([align]).title",
-  "article_selector" : {
-    "" : "a", //probably passar isto a array e assumir o que é o quê
-    "" : "span",
-    "" : "a[href]"
+  "hn" : {
+  	"name" : "Hacker News",
+    "url" : "http://news.ycombinator.com",
+    "type" : "text/html",
+    "links" : [
+      "/news"
+    ],
+    "news_selector" : "td:not([align]).title",
+    "article_selector" : {
+      "url" : "a",
+      "src" : "span",
+      "title" : "a"
+    }
   },
+  "reddit" : {
+  	"name" : "Reddit",
+  	"url" : "http://www.reddit.com",
+    "type" : "application/json",
+    "links" : [
+      "/r/javascript",
+      "/r/node"
+    ],
+    "news_selector" : "data.children",
+    "article_selector" : {
+      "url" : "data.url",
+      "src" : "data.title",
+      "title" : "data.domain"
+    }
+  },
+  "echojs" : {
+  	"name" : "EchoJS",
+  	"url" : "http://www.echojs.com",
+    "type" : "text/html",
+    "links" : [
+      "/r/javascript",
+      "/r/node"
+    ],
+    "news_selector" : "",
+  }
 }
