@@ -18,8 +18,8 @@
   	"url" : "http://www.reddit.com",
     "type" : "application/json",
     "links" : [
-      "/r/javascript",
-      "/r/node"
+      "/r/javascript/.json",
+      "/r/node/.json"
     ],
     "news_selector" : "data.children",
     "article_selector" : {

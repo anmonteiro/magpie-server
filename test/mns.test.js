@@ -8,7 +8,7 @@ var mns = require('../lib/mns');
 
 describe('the same instance of mns', function () {
   var reddit = [ '{"name" : "Reddit","url" : "http://www.reddit.com",',
-    '"type" : "application/json","links" : ["/r/javascript","/r/node"],',
+    '"type" : "application/json","links" : ["/r/javascript/.json","/r/node/.json"],',
     '"news_selector" : "data.children",',
     '"article_selector":{"url":"data.url","src":"data.title","title":"data.domain"}}'
   ].join(''),
@@ -20,11 +20,14 @@ describe('the same instance of mns', function () {
 
   reddit = JSON.parse( reddit );
 
-  console.log(reddit);
+  console.log( reddit );
 
   it('should be able to receive different configurations', function () {
     scraper = mns(reddit);
+    expect(scraper).to.be.ok;
+
     scraper = mns(echojs);
+    expect(scraper).to.be.ok;
 
   });
 });
