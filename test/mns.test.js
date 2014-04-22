@@ -18,16 +18,27 @@ describe('the same instance of mns', function () {
 
   var scraper;
 
+  afterEach(function () {
+    scraper = null;
+  });
+
+
+
   reddit = JSON.parse( reddit );
+  echojs = JSON.parse( echojs );
 
   console.log( reddit );
 
-  it('should be able to receive different configurations', function () {
+  it('should be able to change configuration', function () {
     scraper = mns(reddit);
     expect(scraper).to.be.ok;
 
     scraper = mns(echojs);
     expect(scraper).to.be.ok;
+
+  });
+
+  it('should throw an error when invalid configuration is passed', function () {
 
   });
 });
