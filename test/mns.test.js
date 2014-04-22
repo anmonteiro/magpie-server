@@ -7,14 +7,20 @@ var chai = require('chai'),
 var mns = require('../lib/mns');
 
 describe('the same instance of mns', function () {
-  var reddit = [ '{"name" : "Reddit","url" : "http://www.reddit.com",',
+  var reddit = [
+    '{"name" : "Reddit","url" : "http://www.reddit.com",',
     '"type" : "application/json","links" : ["/r/javascript/.json","/r/node/.json"],',
     '"news_selector" : "data.children",',
     '"article_selector":{"url":"data.url","src":"data.title","title":"data.domain"}}'
   ].join(''),
-    echojs = [ '{"name" : "EchoJS","url" : "http://www.echojs.com","type" : ',
-      '"text/html","links" : [  "/r/javascript",  "/r/node"],"news_selector" : ""}'
-      ].join('');
+    echojs = [
+      '{"name" : "EchoJS", "url" : "http://www.echojs.com", "type" : ',
+      '"text/html", "links" : [ "/r/javascript", "/r/node" ], "news_selector" : ""}'
+    ].join(''),
+    invalid_echojs = [
+      '{"name" : "EchoJS","url" : "http://www.echojs.com",',
+      '"links" : [ "/r/javascript", "/r/node" ], "news_selector" : ""}'
+    ].join('');
 
   var scraper;
 
@@ -26,10 +32,11 @@ describe('the same instance of mns', function () {
 
   reddit = JSON.parse( reddit );
   echojs = JSON.parse( echojs );
+  invalid_echojs = JSON.parse( invalid_echojs );
 
   console.log( reddit );
 
-  it('should be able to change configuration', function () {
+  it('should be able to accept new configuration', function () {
     scraper = mns(reddit);
     expect(scraper).to.be.ok;
 
@@ -39,6 +46,11 @@ describe('the same instance of mns', function () {
   });
 
   it('should throw an error when invalid configuration is passed', function () {
-
+    expect(function () {
+      scraper = mns(invalid_echojs);
+    }).to.throw();
   });
 });
+
+
+
