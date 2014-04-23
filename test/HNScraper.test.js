@@ -6,7 +6,7 @@ var chai = require('chai'),
 
 var hn = require('../lib/HNScraper');
 
-describe('HNScraper parse article element function', function () {
+describe('HNScraper parse article element function', function() {
   var el,
     invalidEl,
     obj,
@@ -29,7 +29,7 @@ describe('HNScraper parse article element function', function () {
     obj = null;
   });
 
-  it('should parse one DOM element with the article link into an object', function () {
+  it('should parse one DOM element with the article link into an object', function() {
     hn.parseArticleElement($(el), function(err, art) {
     	expect(err).to.be.null;
     	expect(err).not.to.be.undefined;
@@ -40,20 +40,20 @@ describe('HNScraper parse article element function', function () {
     });
   });
 
-  it('should return an error when an empty DOM element is passed to the function', function () {
-    hn.parseArticleElement($(''), function (err, art) {
+  it('should return an error when an empty DOM element is passed to the function', function() {
+    hn.parseArticleElement($(''), function(err, art) {
       expect(err).not.to.be.null;
       expect(err).not.to.be.undefined;
       expect(art).not.to.be.ok;
     });
   });
   
-  it('should also return an error if an invalid element is passed', function () {
+  it('should also return an error if an invalid element is passed', function() {
     invalidEl = '<div class="titl"><a href="http://www.buildyourownlisp.com/">' +
       'Learn C and build your own programming language</a>' +
       '<span class="comhead"> (buildyourownlisp.com) </span></div>';
 
-      hn.parseArticleElement($(invalidEl), function (err, art) {
+      hn.parseArticleElement($(invalidEl), function(err, art) {
         expect(err).not.to.be.null;
         expect(err).not.to.be.undefined;
         expect(art).not.to.be.ok;
@@ -61,17 +61,17 @@ describe('HNScraper parse article element function', function () {
   });
 });
 
-describe('HNScraper.scrape', function () {
+describe('HNScraper.scrape', function() {
   var api;
-  beforeEach(function () {
+  beforeEach(function() {
     api = null;
   });
 
-  afterEach(function () {
+  afterEach(function() {
     nock.cleanAll();
   });
 
-  it('should get content when passed the correct url', function (done) {
+  it('should get content when passed the correct url', function(done) {
     api = nock('http://news.ycombinator.com')
       .get('/news')
       .reply(200, 'hi');
@@ -82,7 +82,7 @@ describe('HNScraper.scrape', function () {
     });
   });
 
-  it('should return an error when the server replies 404', function (done) {
+  it('should return an error when the server replies 404', function(done) {
     api = nock('http://news.ycombinator.com')
       .get('/news')
       .reply(404);
@@ -96,14 +96,14 @@ describe('HNScraper.scrape', function () {
 
 });
 
-describe('HNScraper.getItems', function () {
+describe('HNScraper.getItems', function() {
   var api;
 
-  afterEach(function () {
+  afterEach(function() {
     nock.cleanAll();
   });
 
-  it('should return a list of 30 items when hn.html is the response', function (done) {
+  it('should return a list of 30 items when hn.html is the response', function(done) {
     api = nock('http://news.ycombinator.com')
       .get('/news')
       .replyWithFile(200, __dirname + '/files/hn.html');

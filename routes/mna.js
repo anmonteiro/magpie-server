@@ -1,8 +1,8 @@
 var hn = require('../lib/HNScraper.js');
 
-module.exports = (function () {
+module.exports = (function() {
   return {
-    index : function (req, res, next) {
+    index : function(req, res, next) {
       hn.getItems(function(err, items) {
       	if (err) {
       		return res.send(404);

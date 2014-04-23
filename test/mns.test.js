@@ -6,7 +6,7 @@ var chai = require('chai'),
 
 var mns = require('../lib/mns');
 
-describe('the same instance of mns', function () {
+describe('the same instance of mns', function() {
   var reddit = [
     '{"name" : "Reddit","url" : "http://www.reddit.com",',
     '"type" : "application/json","links" : ["/r/javascript/.json","/r/node/.json"],',
@@ -24,7 +24,7 @@ describe('the same instance of mns', function () {
 
   var scraper;
 
-  afterEach(function () {
+  afterEach(function() {
     scraper = null;
   });
 
@@ -36,7 +36,7 @@ describe('the same instance of mns', function () {
 
   console.log( reddit );
 
-  it('should be able to accept new configuration', function () {
+  it('should be able to accept new configuration', function() {
     scraper = mns(reddit);
     expect(scraper).to.be.ok;
 
@@ -45,10 +45,14 @@ describe('the same instance of mns', function () {
 
   });
 
-  it('should throw an error when invalid configuration is passed', function () {
-    expect(function () {
-      scraper = mns(invalid_echojs);
+  it('should throw an error when invalid configuration is passed', function() {
+    expect(function() {
+      scraper = mns(false);
     }).to.throw();
+
+    expect(function() {
+      
+    });
   });
 });
 

@@ -11,12 +11,12 @@ routes(app);
 var api;
 
 
-describe('GET /', function () {
+describe('GET /', function() {
   
   afterEach(function() {
     nock.cleanAll();
   });
-  it('should get the items object', function () {
+  it('should get the items object', function() {
   	api = nock('http://news.ycombinator.com')
       .get('/news')
       .replyWithFile(200, __dirname + '/files/hn.html');
@@ -25,7 +25,7 @@ describe('GET /', function () {
       .get('/')
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
+      .end(function(err, res) {
         if (err) {
           throw err;
         }
@@ -36,13 +36,13 @@ describe('GET /', function () {
 
 });
 
-describe('GET /random_url_42', function () {
+describe('GET /random_url_42', function() {
 
   afterEach(function() {
     nock.cleanAll();
   });
   
-  it('should return an error because we have no routes defined to that url', function () {
+  it('should return an error because we have no routes defined to that url', function() {
   	api = nock('http://news.ycombinator.com')
       .get('/news')
       .replyWithFile(200, __dirname + '/files/hn.html');
