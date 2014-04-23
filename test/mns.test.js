@@ -37,7 +37,7 @@ describe('calling mns without new operator', function() {
   it('should not pollute the global scope', function() {
     scraper = mns(reddit);
     expect(global).to.exist;
-    expect(global).not.to.contain.keys('items','type');
+    expect(global).to.not.contain.keys('items','type');
   });
 });
 
@@ -64,11 +64,11 @@ describe('the same instance of mns', function() {
 
   it('should throw an error when invalid configuration is passed', function() {
     expect(function() {
-      scraper = mns(true);
+      scraper = mns( true );
     }).to.throw();
 
     expect(function() {
-      scraper = mns('not an object');
+      scraper = mns( 'not an object' );
     }).to.throw();
 
   });
@@ -80,8 +80,8 @@ describe('an mns instance', function() {
   });
 
   it('should have mandatory properties', function() {
-    scraper = mns(reddit);
-    expect(scraper).to.contain.keys('type', 'url', 'selector'); //pensar nome disto
+    scraper = mns( reddit );
+    expect( scraper ).to.contain.keys( 'type', 'url' );
   });
 });
 
