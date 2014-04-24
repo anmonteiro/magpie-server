@@ -22,8 +22,8 @@ var reddit = [
   ].join(''),
   hn = [
     '{ "name" : "Hacker News", "url" : "http://news.ycombinator.com",',
-    '"type" : "text/html", "links" : [ "/news" ], "news_selector" : "td:not',
-    '([align]).title", "article_selector" : { "url" : "a", "src" : "span",',
+    '"type" : "text/html", "links" : [ "/news" ], "groupSelector" : "td:not',
+    '([align]).title", "articleSelector" : { "url" : "a", "src" : "span",',
     '"title" : "a" } }'
   ].join('');
 
@@ -122,6 +122,13 @@ describe('mns function execute', function() {
       .replyWithFile(200, __dirname + '/files/hn.html');
 
       scraper = mns( hn );
+
+      for ( var key in scraper ) {
+        if ( typeof scraper[key] === 'function' ) {
+          console.log(key);
+        }
+      }
+
       var items = scraper.execute(function( err, items ) {
         expect(err).to.be.null;
         expect(items).not.to.be.undefined;
@@ -129,7 +136,7 @@ describe('mns function execute', function() {
         expect(items).to.have.length(30);
         for (var i = 0; i < 30; i++) {
           (function(idx){
-            expect(items[idx]).to.have.keys(['src', 'title', 'url']);
+            expect(items[idx]).to.have.keys( Object.keys( hn.articleSelector ) );
           })(i);
         }
 
