@@ -5,7 +5,10 @@
     "type" : "text/html",
     "listSelector" : "td:not([align]).title",
     "articleSelector" : {
-      "url" : "a",
+      "url" : {
+        "selector" : "a",
+        "attr" : "href"
+      },
       "src" : "span",
       "title" : "a"
     }
@@ -38,7 +41,10 @@
     "type" : "text/html",
     "listSelector" : "#newslist > article",
     "articleSelector" : {
-      "url" : "h2 > a",
+      "url" : {
+        "selector" : "h2 > a",
+        "attr" : "href"
+      },
       "src" : "address",
       "title" : "h2 > a"
     }

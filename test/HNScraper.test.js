@@ -42,8 +42,7 @@ describe('HNScraper parse article element function', function() {
 
   it('should return an error when an empty DOM element is passed to the function', function() {
     hn.parseArticleElement($(''), function(err, art) {
-      expect(err).not.to.be.null;
-      expect(err).not.to.be.undefined;
+      expect(err).to.be.ok;
       expect(art).not.to.be.ok;
     });
   });
