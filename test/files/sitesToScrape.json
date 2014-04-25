@@ -1,28 +1,32 @@
 {
   "hn" : {
   	"name" : "Hacker News",
-    "url" : "http://news.ycombinator.com",
+    "url" : "http://news.ycombinator.com/news",
     "type" : "text/html",
-    "links" : [
-      "/news"
-    ],
-    "news_selector" : "td:not([align]).title",
-    "article_selector" : {
+    "listSelector" : "td:not([align]).title",
+    "articleSelector" : {
       "url" : "a",
       "src" : "span",
       "title" : "a"
     }
   },
-  "reddit" : {
-  	"name" : "Reddit",
-  	"url" : "http://www.reddit.com",
+  "reddit-js" : {
+  	"name" : "Reddit /r/javascript",
+  	"url" : "http://www.reddit.com/r/javascript/.json",
     "type" : "application/json",
-    "links" : [
-      "/r/javascript/.json",
-      "/r/node/.json"
-    ],
-    "news_selector" : "data.children",
-    "article_selector" : {
+    "listSelector" : "data.children",
+    "articleSelector" : {
+      "url" : "data.url",
+      "src" : "data.title",
+      "title" : "data.domain"
+    }
+  },
+  "reddit-node" : {
+  	"name" : "Reddit /r/node",
+  	"url" : "http://www.reddit.com/r/node/.json",
+    "type" : "application/json",
+    "listSelector" : "data.children",
+    "articleSelector" : {
       "url" : "data.url",
       "src" : "data.title",
       "title" : "data.domain"
@@ -32,10 +36,11 @@
   	"name" : "EchoJS",
   	"url" : "http://www.echojs.com",
     "type" : "text/html",
-    "links" : [
-      "/r/javascript",
-      "/r/node"
-    ],
-    "news_selector" : ""
+    "listSelector" : "#newslist > article",
+    "articleSelector" : {
+      "url" : "h2 > a",
+      "src" : "address",
+      "title" : "h2 > a"
+    }
   }
 }

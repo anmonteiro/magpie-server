@@ -1,36 +1,24 @@
-var chai = require('chai'),
+var chai = require( 'chai' ),
   should = chai.should(),
   expect = chai.expect,
-  nock = require('nock'),
-  cheerio = require('cheerio');
+  nock = require( 'nock' ),
+  cheerio = require( 'cheerio' ),
+  fs = require( 'fs' );
 
-var mns = require('../lib/mns');
+var mns = require( '../lib/mns' );
+var sites = fs.readFileSync( __dirname + '/files/sitesToScrape.json' );
 
-var reddit = [
-  '{"name" : "Reddit","url" : "http://www.reddit.com",',
-  '"type" : "application/json","links" : ["/r/javascript/.json","/r/node/.json"],',
-  '"groupSelector" : "data.children",',
-  '"articleSelector":{"url":"data.url","src":"data.title","title":"data.domain"}}'
-].join(''),
-  echojs = [
-    '{"name" : "EchoJS", "url" : "http://www.echojs.com", "type" : ',
-    '"text/html", "links" : [ "/r/javascript", "/r/node" ], "groupSelector" : ""}'
-  ].join(''),
+sites = JSON.parse( sites );
+
+var reddit = sites[ 'reddit-js' ],
+  echojs = sites.echojs,
   invalid_echojs = [
     '{"name" : "EchoJS","url" : "http://www.echojs.com",',
-    '"links" : [ "/r/javascript", "/r/node" ], "groupSelector" : ""}'
+    '"links" : [ "/r/javascript", "/r/node" ], "listSelector" : ""}'
   ].join(''),
-  hn = [
-    '{ "name" : "Hacker News", "url" : "http://news.ycombinator.com",',
-    '"type" : "text/html", "links" : [ "/news" ], "groupSelector" : "td:not',
-    '([align]).title", "articleSelector" : { "url" : "a", "src" : "span",',
-    '"title" : "a" } }'
-  ].join('');
+  hn = sites.hn;
 
-reddit = JSON.parse( reddit );
-echojs = JSON.parse( echojs );
 invalid_echojs = JSON.parse( invalid_echojs );
-hn = JSON.parse( hn );
 var scraper;
 
 describe('calling mns without new operator', function() {
@@ -87,7 +75,7 @@ describe('an mns object', function() {
 
   it('should have mandatory properties', function() {
     scraper = mns( reddit );
-    expect( scraper ).to.contain.keys( 'type', 'url', 'groupSelector', 'articleSelector' );
+    expect( scraper ).to.contain.keys( 'type', 'url', 'listSelector', 'articleSelector' );
     expect( scraper.articleSelector ).to.contain.keys( 'url', 'src', 'title' );
   });
 
@@ -95,6 +83,23 @@ describe('an mns object', function() {
     scraper = mns();
     expect( scraper ).to.contain.keys( 'type', 'url', 'groupSelector', 'articleSelector' );
   });*/
+
+  it('should match passed options', function() {
+    scraper = mns( hn );
+    expect( scraper ).to.contain.keys( 'url', 'type', 'listSelector', 'articleSelector' );
+    expect( scraper.url ).to.equal( hn.url );
+    expect( scraper.type ).to.equal( hn.type );
+    expect( scraper.listSelector ).to.eql( hn.listSelector );
+    expect( scraper.articleSelector ).to.eql( hn.articleSelector );
+
+    scraper = mns( echojs );
+    expect( scraper ).to.contain.keys( 'url', 'type', 'listSelector', 'articleSelector' );
+    expect( scraper.url ).to.equal( echojs.url );
+    expect( scraper.type ).to.equal( echojs.type );
+    expect( scraper.listSelector ).to.eql( echojs.listSelector );
+    expect( scraper.articleSelector ).to.eql( echojs.articleSelector );
+
+  });
 
   it('should have json parser when config is json', function() {
     scraper = mns( reddit );
@@ -116,31 +121,51 @@ describe('mns function execute', function() {
       nock.cleanAll();
     });
 
-    it('should return a list of 30 items when hn.html is the response', function( done ) {
-      api = nock('http://news.ycombinator.com')
-      .get('/news')
-      .replyWithFile(200, __dirname + '/files/hn.html');
+    describe('should return a list of 30 items', function() {
+      it('when hn.html is the response', function( done ) {
+	    api = nock( 'http://news.ycombinator.com' )
+	      .get( '/news' )
+	      .replyWithFile( 200, __dirname + '/files/hn.html' );
 
-      scraper = mns( hn );
+	    scraper = mns( hn );
 
-      for ( var key in scraper ) {
-        if ( typeof scraper[key] === 'function' ) {
-          console.log(key);
-        }
-      }
+	    var items = scraper.execute(function( err, items ) {
+	      expect( err ).to.be.null;
+	      expect( items ).not.to.be.undefined;
 
-      var items = scraper.execute(function( err, items ) {
-        expect(err).to.be.null;
-        expect(items).not.to.be.undefined;
-        //console.log(JSON.stringify(items, null, 4));
-        expect(items).to.have.length(30);
-        for (var i = 0; i < 30; i++) {
-          (function(idx){
-            expect(items[idx]).to.have.keys( Object.keys( hn.articleSelector ) );
-          })(i);
-        }
+	      expect( items ).to.have.length( 30 );
 
-        done();
+	      for (var i = 0; i < 30; i++) {
+	        (function( idx ) {
+	          expect( items[ idx ] ).to.have.keys( Object.keys( hn.articleSelector ) );
+	        })( i );
+	      }
+
+	      done();
+	    });
+	  });
+
+	  it('when echojs.html is the response', function( done ) {
+	    api = nock( 'http://www.echojs.com' )
+	      .get( '/' )
+	      .replyWithFile( 200, __dirname + '/files/echojs.html' );
+
+	    scraper = mns( echojs );
+
+	    var items = scraper.execute(function( err, items ) {
+	      expect( err ).to.be.null;
+	      expect( items ).not.to.be.undefined;
+
+	      expect( items ).to.have.length( 30 );
+
+	      for (var i = 0; i < 30; i++) {
+	        (function( idx ) {
+	          expect( items[ idx ] ).to.have.keys( Object.keys( echojs.articleSelector ) );
+	        })( i );
+	      }
+
+	      done();
+	    });
       });
     });
   });
