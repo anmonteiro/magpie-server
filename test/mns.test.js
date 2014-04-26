@@ -101,14 +101,6 @@ describe('an mns object', function() {
 
   });
 
-  it('should have json parser when config is json', function() {
-    scraper = mns( reddit );
-    expect(scraper.parser()).to.equal('json');
-    
-    scraper = mns( echojs );
-    expect(scraper.parser()).to.equal('html');
-  });
-
 });
 
 describe('mns function execute', function() {
