@@ -16,7 +16,8 @@ var reddit = sites[ 'reddit-js' ],
     '{"name" : "EchoJS","url" : "http://www.echojs.com",',
     '"links" : [ "/r/javascript", "/r/node" ], "listSelector" : ""}'
   ].join(''),
-  hn = sites.hn;
+  hn = sites.hn,
+  redditNode = sites[ 'reddit-node' ];
 
 invalid_echojs = JSON.parse( invalid_echojs );
 var scraper;
@@ -30,10 +31,6 @@ describe('calling mns without new operator', function() {
   it('should return an object which is a prototype of mns', function() {
     scraper = mns(echojs);
     expect(scraper).to.be.ok;
-
-    /*expect(mnsProto).to.satisfy(function( mns ) {
-      return mns.isPrototypeOf(scraper);
-    });*/
   });
 
   it('should not pollute the global scope', function() {
@@ -71,6 +68,10 @@ describe('an mns object', function() {
       scraper = mns( 'not an object' );
     }).to.throw();
 
+    expect(function() {
+      scraper = mns( invalid_echojs );
+    }).to.throw();
+
   });
 
   it('should have mandatory properties', function() {
@@ -104,66 +105,109 @@ describe('an mns object', function() {
 });
 
 describe('mns function execute', function() {
+  var api;
 
   describe('with html parser', function() {
-    var api;
-
     afterEach(function() {
       scraper = null;
       nock.cleanAll();
     });
 
-    describe('should return a list of 30 items', function() {
+    describe('should return a list of 30 well formed items', function() {
       it('when hn.html is the response', function( done ) {
-	    api = nock( 'http://news.ycombinator.com' )
-	      .get( '/news' )
-	      .replyWithFile( 200, __dirname + '/files/hn.html' );
+  	    api = nock( 'http://news.ycombinator.com' )
+  	      .get( '/news' )
+  	      .replyWithFile( 200, __dirname + '/files/hn.html' );
 
-	    scraper = mns( hn );
+  	    scraper = mns( hn );
 
-	    var items = scraper.execute(function( err, items ) {
-	      expect( err ).to.be.null;
-	      expect( items ).not.to.be.undefined;
+  	    scraper.execute(function( err, items ) {
+  	      expect( err ).to.be.null;
+  	      expect( items ).not.to.be.undefined;
 
-	      expect( items ).to.have.length( 30 );
+  	      expect( items ).to.have.length( 30 );
 
-	      for (var i = 0; i < 30; i++) {
-	        (function( idx ) {
-	          expect( items[ idx ] ).to.have.keys( Object.keys( hn.articleSelector ) );
-	        })( i );
-	      }
+  	      for (var i = 0; i < 30; i++) {
+  	        (function( idx ) {
+  	          expect( items[ idx ] ).to.have.keys( Object.keys( hn.articleSelector ) );
+  	        })( i );
+  	      }
 
-	      done();
+  	      done();
+  	    });
 	    });
-	  });
 
-	  it('when echojs.html is the response', function( done ) {
-	    api = nock( 'http://www.echojs.com' )
-	      .get( '/' )
-	      .replyWithFile( 200, __dirname + '/files/echojs.html' );
+  	  it('when echojs.html is the response', function( done ) {
+  	    api = nock( 'http://www.echojs.com' )
+  	      .get( '/' )
+  	      .replyWithFile( 200, __dirname + '/files/echojs.html' );
 
-	    scraper = mns( echojs );
+  	    scraper = mns( echojs );
 
-	    var items = scraper.execute(function( err, items ) {
-	      expect( err ).to.be.null;
-	      expect( items ).not.to.be.undefined;
+        scraper.execute(function( err, items ) {
+  	      expect( err ).to.be.null;
+  	      expect( items ).to.be.ok;
 
-	      expect( items ).to.have.length( 30 );
+  	      expect( items ).to.have.length( 30 );
 
-	      for (var i = 0; i < 30; i++) {
-	        (function( idx ) {
-	          expect( items[ idx ] ).to.have.keys( Object.keys( echojs.articleSelector ) );
-	        })( i );
-	      }
+  	      for (var i = 0; i < items.length; i++) {
+  	        (function( idx ) {
+  	          expect( items[ idx ] ).to.have.keys( Object.keys( echojs.articleSelector ) );
+  	        })( i );
+  	      }
 
-	      done();
-	    });
+  	      done();
+  	    });
       });
     });
   });
 
   describe('with json parser', function() {
+    describe('should return a list of 25/26 items', function() {
+      it('when reddit.json (/r/javascript) is the response', function( done ) {
+        api = nock( 'http://www.reddit.com' )
+          .get( '/r/javascript/.json' )
+          .replyWithFile( 200, __dirname + '/files/reddit-js.json' );
+        
+        scraper = mns( reddit );
 
+        scraper.execute(function(err, items) {
+          expect( err ).to.be.null;
+
+          expect( items ).to.be.ok;
+          expect( items ).to.have.length.within( 25, 26 );
+
+          for (var i = 0; i < items.length; i++) {
+            (function( idx ) {
+              expect( items[ idx ] ).to.have.keys( Object.keys( reddit.articleSelector ) );
+            })( i );
+          }
+          done();
+        });
+      });
+
+      it('when reddit.json (/r/node) is the response', function( done ) {
+        api = nock( 'http://www.reddit.com' )
+          .get( '/r/node/.json' )
+          .replyWithFile( 200, __dirname + '/files/reddit-js.json' );
+        
+        scraper = mns( redditNode );
+
+        scraper.execute(function(err, items) {
+          expect( err ).to.be.null;
+
+          expect( items ).to.be.ok;
+          expect( items ).to.have.length.within( 25, 26 );
+
+          for (var i = 0; i < items.length; i++) {
+            (function( idx ) {
+              expect( items[ idx ] ).to.have.keys( Object.keys( redditNode.articleSelector ) );
+            })( i );
+          }
+          done();
+        });
+      });
+    });
   });
 });
 
