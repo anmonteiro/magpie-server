@@ -2,7 +2,7 @@
   "name": "mna",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/anmonteiro/mna.git"
@@ -13,14 +13,13 @@
     "supertest": "0.10.x"
   },
   "dependencies": {
-    "express": "3.x",
-    "cheerio": "0.14.x",
-    "request": "2.34.x"
+    "express" : "3.x",
+    "mns" : "0.x"
   },
   "scripts": {
   	"start": "node main",
     "test": "mocha --ui bdd test"
   },
-  "author": "anm",
+  "author": "anmonteiro",
   "license": "ISC"
 }
