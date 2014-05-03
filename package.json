@@ -17,7 +17,7 @@
     "mns" : "0.x"
   },
   "scripts": {
-  	"start": "node main",
+  	"start": "node app.js",
     "test": "mocha --ui bdd test"
   },
   "author": "anmonteiro",
