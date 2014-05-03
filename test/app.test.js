@@ -9,12 +9,12 @@ var app;
 var api;
 
 
-describe('GET /', function() {
+describe('Routing', function() {
   
   beforeEach(function() {
     app = express();
 
-    routes(app);
+    routes.setup(app);
     api = nock('http://news.ycombinator.com')
       .get('/news')
       .replyWithFile(200, __dirname + '/files/hn.html');
@@ -23,30 +23,29 @@ describe('GET /', function() {
   afterEach(function() {
     nock.cleanAll();
   });
-  it('should get the items object', function(done) {
-  	
 
-    request(app)
-      .get('/')
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        if (err) {
-          return done( err );
-        }
-        done();
-      });
-      
+  describe('Hacker News', function() {
+    it('should route to HN handler', function( done ) {
+
+      request(app)
+        .get('/sites/hn')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if (err) {
+            return done( err );
+          }
+          return done();
+        });
+    }); 
   });
-
-
 });
 
 describe('GET /random_url_42', function() {
   beforeEach(function() {
     app = express();
 
-    routes(app);
+    routes.setup(app);
     api = nock('http://news.ycombinator.com')
       .get('/news')
       .times(10)

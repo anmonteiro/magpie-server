@@ -1,8 +1,10 @@
-var mna = require('./mna');
+var sites = require( './sites' );
 
-module.exports = function(app) {
+function setup( app ) {
 
-  app.get('/', mna.index);
-
+  app.get( '/sites/:id', sites.getSite );
+  //app.get( '/sites/*', sites.handle )
 
 };
+
+module.exports.setup = exports.setup = setup;
