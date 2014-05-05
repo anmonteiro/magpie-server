@@ -1,0 +1,28 @@
+{
+  "name": "mna",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anmonteiro/mna.git"
+  },
+  "devDependencies": {
+    "chai": "1.9.x",
+    "nock": "0.27.x",
+    "supertest": "0.10.x"
+  },
+  "dependencies": {
+    "express" : "3.x",
+    "mns" : "0.x"
+  },
+  "scripts": {
+  	"start": "node app.js",
+    "test": "mocha --ui bdd test"
+  },
+  "engines": {
+      "node": "0.10.x"
+  },
+  "author": "anmonteiro",
+  "license": "ISC"
+}
