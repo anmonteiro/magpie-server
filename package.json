@@ -20,6 +20,9 @@
   	"start": "node app.js",
     "test": "mocha --ui bdd test"
   },
+  "engines": {
+      "node": "0.10.x"
+  },
   "author": "anmonteiro",
   "license": "ISC"
 }
