@@ -24,9 +24,6 @@ var sitesController = (function() {
   }
 
   return {
-    index : function( req, res, next ) {
-      return res.json('[]');
-    },
     getSite : getSite
   };
 })();
