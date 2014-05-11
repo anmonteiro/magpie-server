@@ -5,15 +5,16 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anmonteiro/mna.git"
+    "url": "https://github.com/anmonteiro/mna-server.git"
   },
   "devDependencies": {
-    "chai": "1.9.x",
-    "nock": "0.27.x",
-    "supertest": "0.10.x"
+    "chai" : "1.9.x",
+    "nock" : "0.27.x",
+    "supertest" : "0.10.x",
+    "mocha" : "1.18.x"
   },
   "dependencies": {
-    "express" : "3.x",
+    "express" : "4.x",
     "mns" : "0.x"
   },
   "scripts": {
