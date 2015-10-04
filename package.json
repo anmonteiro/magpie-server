@@ -1,11 +1,11 @@
 {
-  "name": "mna",
+  "name": "magpie",
   "version": "0.0.0",
   "description": "",
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/anmonteiro/mna-server.git"
+    "url": "https://github.com/anmonteiro/magpie-server.git"
   },
   "devDependencies": {
     "chai" : "1.9.x",
@@ -25,5 +25,5 @@
       "node": "0.10.x"
   },
   "author": "anmonteiro",
-  "license": "ISC"
+  "license": "MIT"
 }
