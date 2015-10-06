@@ -10,7 +10,7 @@
           "selector" : "a",
           "attr" : "href"
         },
-        "src" : "span",
+        "src" : "span.sitestr",
         "title" : "a"
       }
     }
