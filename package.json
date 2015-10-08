@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "express" : "4.x",
-    "mns" : "0.x"
+    "chital" : ">=0.3.0"
   },
   "scripts": {
   	"start": "node app.js",

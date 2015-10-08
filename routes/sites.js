@@ -1,4 +1,4 @@
-var mns = require( 'mns' );
+var chital = require( 'chital' );
 var sites = require( '../sitesToScrape.json' );
 
 var sitesController = (function() {
@@ -13,7 +13,7 @@ var sitesController = (function() {
       return next();
     }
 
-    scraper = mns( options );
+    scraper = chital( options );
 
     scraper.execute(function( err, items ) {
       if ( err ) {
