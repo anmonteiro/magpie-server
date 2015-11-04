@@ -1,20 +1,20 @@
 {
-  "name": "magpie",
-  "version": "0.0.0",
-  "description": "",
+  "name": "magpie-server",
+  "version": "1.0.0-alpha1",
+  "description": "a news aggregator (server)",
   "main": "app.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/anmonteiro/magpie-server.git"
   },
   "devDependencies": {
-    "chai" : "1.9.x",
-    "nock" : "0.27.x",
-    "supertest" : "0.10.x",
-    "mocha" : "1.18.x"
+    "chai" : ">=3.4.x",
+    "mocha" : ">=2.3.3",
+    "nock" : ">=2.17.x",
+    "supertest" : ">=1.1.x"
   },
   "dependencies": {
-    "express" : "4.x",
+    "express" : ">=4.13.3",
     "chital" : ">=0.3.0"
   },
   "scripts": {
